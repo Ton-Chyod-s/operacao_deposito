@@ -2,7 +2,7 @@
 # depósito, saque e exato
 
 menu = {
-    "1": "deposito",
+    "1": "Deposito",
     "2": "Saque",
     "3": "Extrato",
     "4": "Sair"
@@ -31,11 +31,11 @@ while True:
         
     while True:
         
-        if opção == 'deposito' :
+        if opção == 'Deposito' :
             valor = int(input('Digite um valor: '))
             if valor > 0:
                 saldo += valor
-                print(f'Deposito: R${valor:.2f}\nTotal:    R${saldo}')
+                print(f'Deposito: R${valor:.2f}\n')
                 break
             else:
                 print('A operação falhou!!')
@@ -62,7 +62,7 @@ while True:
             elif valor > 0:
                 saldo -= valor
                 num_saque += 1
-                print(f'Saque: R${valor:.2f}\nTotal:    R${saldo}')
+                print(f'Saque: R${valor:.2f}\n')
                 break
         
             else:
@@ -71,7 +71,7 @@ while True:
                 
         elif opção == 'Extrato':
             if saldo >= 0:
-                print('========= Estrato =========\n')
+                print('========= Extrato =========\n')
                 if saldo == 0: 
                     print(f'Não houve movimentação\n')
                 else:
