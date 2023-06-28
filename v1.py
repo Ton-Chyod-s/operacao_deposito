@@ -73,7 +73,7 @@ while True:
             if saldo >= 0:
                 print('========= Estrato =========\n')
                 if saldo == 0: 
-                    print(f'Não ouve movimentação\n')
+                    print(f'Não houve movimentação\n')
                 else:
                     print(f'Saldo: R$ {saldo:.2f}\n')
                     
