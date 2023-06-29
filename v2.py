@@ -1,14 +1,6 @@
 
 import textwrap
 
-saldo = 0
-num_saque = 0
-lim_saque = 3
-limite = 500
-extrato = 0
-usuarios = ""
-contas = ""
-    
 def menu():
     menu = '''\n
     ============= menu =============
@@ -16,7 +8,7 @@ def menu():
     [s]\tSacar
     [e]\tExtrato
     [nc]\tNova conta
-    [lc]\tNova conta
+    [lc]\tLista de contas
     [nu]\tNovo Usuario
     [q]\tSair
     '''
@@ -86,23 +78,40 @@ def filtrar_usuario(cpf, usuarios):
     usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
     return usuarios_filtrados[0] if usuarios_filtrados else None
 
+def criar_conta(agencia,numero_conta,usuarios):
+    cpf = input('informe o CPF: ')
+    usuario = filtrar_usuario(cpf,usuarios)
 
-
-
-'''
-while True:
+    if usuario:
+        print('\n=== Conta criada com sucesso ===')
+        return {'agencia':agencia, 'numero_conta':numero_conta,'usuario':usuario}
     
-    opção = input('Digite uma opção: ')
+    print('\n### Usuario não encontrado ###')
 
-    if opção in menu:
-        opção = menu[opção]
-    else:
-        print("Opção inválida")
-        continue
+def listar_contas(contas):
+    for conta in contas:
+        linha = f"""\
+            agencia:\t{conta['agencia']}
+            c\c:\t\t{conta['numero_conta']}
+            Titular:\t{conta['usuario']['nome']}
+            """
+        print("=" + str(100))
+        print(textwrap.dedent(linha))
         
+def main():
+    saldo = 0
+    num_saque = 0
+    lim_saque = 3
+    limite = 500
+    extrato = ""
+    usuarios = []
+    contas = []
+    AGENCIA = "0001"
+    
     while True:
+        opção = menu()
         
-        if opção == 'Deposito' :
+        if opção == 'd' :
             valor = int(input('Digite um valor: '))
             if valor > 0:
                 saldo += valor
@@ -112,8 +121,7 @@ while True:
             else:
                 print('\n=== A operação falhou! O valor informado é invalido. ===')
                 
-            
-        elif opção == 'Saque':
+        elif opção == 's':
             valor = int(input('Digite um valor: '))
             excedeu_saldo = valor > saldo
             excedeu_limite = valor > limite
@@ -121,27 +129,26 @@ while True:
             
             if excedeu_saldo:
                 print('A operação falhou! Voce não tem sado o suficiente!')
-                break
+                
             
             elif excedeu_limite:
                 print('A operação falhou! Valor de saque excedeu o limite!')
-                break
+                
             
             elif excedeu_saque:
                 print('A operação falhou! numero de saque excedido!')
-                break
+                
             
             elif valor > 0:
                 saldo -= valor
                 num_saque += 1
                 print(f'Saque: R${valor:.2f}\n')
-                break
+                
         
             else:
-                print('A operação falhou!!')
-                break
+                print('A operação falhou!!')     
                 
-        elif opção == 'Extrato':
+        elif opção == 'e':
             if saldo >= 0:
                 print('========= Extrato =========\n')
                 if saldo == 0: 
@@ -150,10 +157,22 @@ while True:
                     print(f'Saldo: R$ {saldo:.2f}\n')
                     
                 print('===========================')
-                break
         
+        elif opção == 'nc':
+            numero_conta = len(contas) + 1
+            conta = criar_conta(AGENCIA, numero_conta, usuarios)
+
+            if conta:
+                contas.append(conta)
+                
+        elif opção == 'lc':
+            listar_contas(contas)
+        
+        elif opção == 'nu':
+            cadastrar_pessoas(usuarios)
+            
         else:
-            print("Fim do programa")
-            break
-    
-'''
+            print("\n=== Opção invalida ===")
+            
+
+main()
